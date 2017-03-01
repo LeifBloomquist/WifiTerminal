@@ -32,7 +32,10 @@ Sept 18th, 2016: Alex Burger
 #define BLUE_LED 2
 #define RED_LED  0
 
-SoftwareSerial softSerial(4, 5); // RX, TX
+#define RX_PIN   12
+#define TX_PIN   14
+
+SoftwareSerial softSerial(RX_PIN, TX_PIN); // RX, TX
 
 unsigned int BAUD_RATE = 9600;
 
