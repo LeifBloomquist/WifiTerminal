@@ -34,9 +34,10 @@ Sept 18th, 2016: Alex Burger
 #define RX_PIN   12
 #define TX_PIN   14
 
-SoftwareSerial softSerial(RX_PIN, TX_PIN); // RX, TX
+#define DEFAULT_BAUD_RATE 9600
 
-unsigned int BAUD_RATE = 9600;
+unsigned int BAUD_RATE = DEFAULT_BAUD_RATE;
+SoftwareSerial softSerial(RX_PIN, TX_PIN); // RX, TX
 
 String lastHost = "";
 int lastPort = TELNET_DEFAULT_PORT;
@@ -45,10 +46,6 @@ int mode_Hayes = 1;    // 0 = Menu, 1 = Hayes
 
 void setup() 
 {  
-  // Serial connections
-  Serial.begin(115200);
-  softSerial.begin(BAUD_RATE);
-
   // LEDs
   pinMode(BLUE_LED, OUTPUT);
   pinMode(RED_LED, OUTPUT);
@@ -58,6 +55,14 @@ void setup()
   EEPROM.begin(4096);
   String ssid     = readEEPROMString(ADDR_WIFI_SSID);
   String password = readEEPROMString(ADDR_WIFI_PASS);
+
+  // Baud Rate 
+  BAUD_RATE = readEEPROMInteger(ADDR_BAUD_LO);
+  BAUD_RATE = ValidateBaudRate(BAUD_RATE);
+
+  // Serial connections
+  Serial.begin(115200);   // Debugging
+  softSerial.begin(BAUD_RATE);
 
   // Opening Message and connect to Wifi
   softSerial.println();
@@ -197,7 +202,7 @@ void Configuration()
         break;
 
       case '3':
-      //  ChangeBaudRate();
+        ChangeBaudRate();
         break;
 
       case '4': return;
@@ -257,6 +262,11 @@ void ShowInfo(boolean powerup)
 
   softSerial.print(F("Firmware:    "));
   softSerial.println(VERSION);
+
+  yield();  // For 300 baud
+
+  softSerial.print(F("Baud Rate:   "));
+  softSerial.println(BAUD_RATE);
 
   yield();  // For 300 baud
 }

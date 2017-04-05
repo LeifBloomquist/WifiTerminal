@@ -23,6 +23,7 @@
     <None Include="UserInput.ino" />
     <None Include="Incoming.ino" />
     <None Include="Hayes.ino" />
+    <None Include="BaudRate.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.WifiTerminal.vsarduino.h">

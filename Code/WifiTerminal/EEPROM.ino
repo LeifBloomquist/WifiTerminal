@@ -1,7 +1,5 @@
 #include "ADDR_EEPROM.h"
 
-
-
 void updateEEPROMByte(int address, byte value)
 {
   if (EEPROM.read(address) != value)
