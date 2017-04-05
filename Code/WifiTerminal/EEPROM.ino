@@ -1,3 +1,7 @@
+#include "ADDR_EEPROM.h"
+
+
+
 void updateEEPROMByte(int address, byte value)
 {
   if (EEPROM.read(address) != value)
@@ -25,21 +29,40 @@ uint16 readEEPROMInteger(int address)
 
 void updateEEPROMPhoneBook(int address, String host)
 {
-  int i = 0;
-  for (; i < 38; i++)
-  {
-    EEPROM.write(address + i, host.c_str()[i]);
-  }
-  EEPROM.commit();
+    for (int i = 0; i < ADDR_HOST_SIZE - 2; i++)
+	{
+	    EEPROM.write(address + i, host.c_str()[i]);
+	}
+	EEPROM.commit();
 }
 
 String readEEPROMPhoneBook(int address)
 {
-  char host[ADDR_HOST_SIZE - 2];
-  int i = 0;
-  for (; i < ADDR_HOST_SIZE - 2; i++)
-  {
+    char host[ADDR_HOST_SIZE - 2];
+
+    for (int i = 0; i < ADDR_HOST_SIZE - 2; i++)
+    {
     host[i] = EEPROM.read(address + i);
-  }
-  return host;
+    }
+    return host;
+}
+
+void updateEEPROMString(int address, String text)
+{
+	for (int i = 0; i < 38; i++)
+	{
+		EEPROM.write(address + i, text.c_str()[i]);
+	}
+	EEPROM.commit();
+}
+
+String readEEPROMString(int address)
+{
+	char text[STRING_SIZE - 2];
+
+    for (int i = 0; i < STRING_SIZE - 2; i++)
+	{
+        text[i] = EEPROM.read(address + i);
+	}
+    return text;
 }

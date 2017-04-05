@@ -285,13 +285,7 @@ void Modem_ProcessCommandBuffer()
       updateEEPROMPhoneBook(ADDR_HOSTS + (i * ADDR_HOST_SIZE), "\0");
     }
   }
-  /*    else if (strstr(Modem_CommandBuffer, ("AT&PBCLEAR")) != NULL)
-  {
-  for (int i = 0; i < ADDR_HOST_ENTRIES - STATIC_PB_ENTRIES; i++)
-  {
-  updateEEPROMPhoneBook(ADDR_HOSTS + (i * ADDR_HOST_SIZE), "\0");
-  }
-
+  /*
   // To add static entries, update STATIC_PB_ENTRIES and add entries below increased x: ADDR_HOST_ENTRIES - x
   updateEEPROMPhoneBook(ADDR_HOSTS + ((ADDR_HOST_ENTRIES - 1) * ADDR_HOST_SIZE), F("WWW.COMMODORESERVER.COM:1541"));   // last entry
   updateEEPROMPhoneBook(ADDR_HOSTS + ((ADDR_HOST_ENTRIES - 2) * ADDR_HOST_SIZE), F("BBS.JAMMINGSIGNAL.COM:23"));       // second last entry

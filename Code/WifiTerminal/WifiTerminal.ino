@@ -24,7 +24,6 @@ Sept 18th, 2016: Alex Burger
 #include <EEPROM.h>
 #include "Telnet.h"
 #include "ADDR_EEPROM.h"
-#include "C:\Leif\GitHub\ESP8266\Common\ssids.h"
 
 #define VERSION "ESP 0.13"
 
@@ -56,7 +55,9 @@ void setup()
   ClearLEDs();
 
   // EEPROM
-  EEPROM.begin(1024);
+  EEPROM.begin(4096);
+  String ssid     = readEEPROMString(ADDR_WIFI_SSID);
+  String password = readEEPROMString(ADDR_WIFI_PASS);
 
   // Opening Message and connect to Wifi
   softSerial.println();
@@ -65,12 +66,25 @@ void setup()
   softSerial.print("Connecting to ");
   softSerial.print(ssid);
 
-  WiFi.begin(ssid, password);
+  WiFi.begin(ssid.c_str(), password.c_str());
+
+  int attempts = 0;
 
   while (WiFi.status() != WL_CONNECTED) 
   {
     delay(500);
     softSerial.print(".");
+
+    attempts++;
+
+    if (attempts > 10)
+    {
+        AnsiReverse(softSerial);
+        softSerial.println("Connection Failed!");
+        AnsiNormal(softSerial);
+
+        ChangeSSID();  // Reboots
+    }
   }
 
   softSerial.println("WiFi connected!");
@@ -164,7 +178,8 @@ void Configuration()
       "\r\n"
       "1. Display Current Configuration\r\n"
       "2. Change SSID\r\n"
-      "3. Return to Main Menu\r\n"
+      "3. Change Baud Rate\r\n"
+      "4. Return to Main Menu\r\n"
       "\r\nSelect: "));
 
     int option = ReadByte(softSerial);
@@ -178,10 +193,14 @@ void Configuration()
         break;
 
       case '2':
-        //ChangeSSID();
+        ChangeSSID();
         break;
 
-      case '3': return;
+      case '3':
+      //  ChangeBaudRate();
+        break;
+
+      case '4': return;
 
       case '\n':
       case '\r':
@@ -246,6 +265,27 @@ void ClearLEDs()
 {
     digitalWrite(BLUE_LED, HIGH);  // HIGH=Off
     digitalWrite(RED_LED, HIGH);
+}
+
+void ChangeSSID()
+{
+    softSerial.println();
+    String input;
+
+    softSerial.print(F("New SSID: "));
+    input = GetInput();
+    updateEEPROMString(ADDR_WIFI_SSID, input);
+
+    softSerial.println();
+
+    softSerial.print(F("Passphrase: "));
+    input = GetInput();
+    updateEEPROMString(ADDR_WIFI_PASS, input);
+
+    softSerial.println(F("\r\nSSID changed.  Rebooting..."));
+    delay(1000);
+    ESP.restart();
+    while (1);
 }
 
 
