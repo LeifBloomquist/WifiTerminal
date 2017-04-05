@@ -1,0 +1,30 @@
+*Pick And Place List
+*Company=
+*Author=
+*eMail=
+*
+*Project=Huzzah DB25 R9
+*Date=00:19:34
+*CreatedBy=Fritzing 0.9.3b.04.19.5c895d327c44a3114e5fcc9d8260daf0cbb52806
+*
+*
+*Coordinates in mm, always center of component
+*Origin 0/0=Lower left corner of PCB
+*Rotation in degree (0-360, math. pos.)
+*
+*No;Value;Package;X;Y;Rotation;Side;Name
+1;100nF;100 mil [THT, multilayer];20.3559;-30.1626;180;Bottom;C5
+2;100nF;100 mil [THT, multilayer];34.3259;-21.2726;180;Bottom;C2
+3;;;27.7569;-27.6226;0;Bottom;Feather Huzzah ESP8266
+4;;;9.66483;-27.2885;0;Bottom;TXT1
+5;100nF;100 mil [THT, multilayer];20.3559;-27.6226;180;Bottom;C4
+6;;;27.6216;-5.73708;0;Bottom;TXT1
+7;;THT;27.9759;-37.7826;-90;Bottom;J1
+8;;db25;27.5973;-6.38246;0;Bottom;X1
+9;;;27.5152;-34.2168;0;Bottom;TXT1
+10;;;38.0425;-27.2885;0;Bottom;TXT1
+11;;;34.3342;-35.2392;0;Bottom;Via1
+12;;THT;27.9759;-17.4626;-90;Bottom;J2
+13;100nF;100 mil [THT, multilayer];20.3559;-25.0826;180;Bottom;C3
+14;;dil16;34.3259;-27.6226;0;Bottom;MAX3232
+15;100nF;100 mil [THT, multilayer];26.7059;-21.2726;180;Bottom;C1
