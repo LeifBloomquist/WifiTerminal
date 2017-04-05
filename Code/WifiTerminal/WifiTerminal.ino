@@ -283,7 +283,10 @@ void ChangeSSID()
     String input;
 
     softSerial.print(F("New SSID: "));
-    input = GetInput();
+    input = GetInput();   
+
+    if (input.length() == 0) return;
+
     updateEEPROMString(ADDR_WIFI_SSID, input);
 
     softSerial.println();
