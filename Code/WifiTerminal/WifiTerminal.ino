@@ -25,7 +25,7 @@ Sept 18th, 2016: Alex Burger
 #include "Telnet.h"
 #include "ADDR_EEPROM.h"
 
-#define VERSION "ESP 0.13"
+#define VERSION "ESP 0.14"
 
 // Defines for the Adafruit Feather HUZZAH ESP8266
 #define BLUE_LED 2
@@ -34,7 +34,7 @@ Sept 18th, 2016: Alex Burger
 #define RX_PIN   12
 #define TX_PIN   14
 
-#define DEFAULT_BAUD_RATE 9600
+#define DEFAULT_BAUD_RATE 2400
 
 unsigned int BAUD_RATE = DEFAULT_BAUD_RATE;
 SoftwareSerial softSerial(RX_PIN, TX_PIN); // RX, TX
@@ -60,7 +60,9 @@ void setup()
   BAUD_RATE = readEEPROMInteger(ADDR_BAUD_LO);
   BAUD_RATE = ValidateBaudRate(BAUD_RATE);
 
-  // Serial connections
+  BAUD_RATE = 38400; // !!!! Testing only, for WYSE terminal
+
+  // USB Serial connections
   Serial.begin(115200);   // Debugging
   softSerial.begin(BAUD_RATE);
 
@@ -82,13 +84,13 @@ void setup()
 
     attempts++;
 
-    if (attempts > 10)
+    if (attempts > 20)
     {
         AnsiReverse(softSerial);
         softSerial.println("Connection Failed!");
         AnsiNormal(softSerial);
 
-        ChangeSSID();  // Reboots
+        ChangeSSID();  // Reboots on change
     }
   }
 
@@ -353,6 +355,7 @@ void TerminalMode(WiFiClient client, WiFiServer &server)
               else   //  Finally regular data - just pass the data along.
               {
                   softSerial.write(data);
+                  delayMicroseconds(200);  // 200 seems to be the limit to keep WYSE term from losing characters
               }
           }
       }
